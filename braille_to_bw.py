@@ -19,6 +19,10 @@ def preprocess_image(image):
     contours, _ = cv2.findContours(morphed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     radius = 0
+    for contour in contours:
+        (x, y, w, h) = cv2.boundingRect(contour)
+        radius = int(max(w, h) / 2)
+        
     # Loop through the contours and draw a circle around each Braille dot
     for contour in contours:
         (x, y, w, h) = cv2.boundingRect(contour)
