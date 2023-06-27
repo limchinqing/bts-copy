@@ -2,7 +2,7 @@ import datetime
 import cv2
 import numpy as np
 
-def preprocess_image(image):  
+def preprocess_image(image):
     # Convert the image to grayscale
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -19,15 +19,11 @@ def preprocess_image(image):
     contours, _ = cv2.findContours(morphed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     radius = 0
-    for contour in contours:
-        (x, y, w, h) = cv2.boundingRect(contour)
-        radius = int(max(w, h) / 2)
-
     # Loop through the contours and draw a circle around each Braille dot
     for contour in contours:
         (x, y, w, h) = cv2.boundingRect(contour)
         cv2.circle(image, (x + int(w/2), y + int(h/2)), radius, (0, 0, 0), -6)
-        
+
     # Convert the image to grayscale
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -42,11 +38,11 @@ def preprocess_image(image):
 
     # Bitwise AND operation to extract black areas on the white background
     result = cv2.bitwise_and(white_background, white_background, mask=mask)
-    result = cv2.bitwise_not(result)   
+    result = cv2.bitwise_not(result)
 
     output_filename = "output.jpg"
 
     # Save the result with the updated filename
     cv2.imwrite(output_filename, result)
-    
+
     return output_filename
